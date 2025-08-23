@@ -35,7 +35,15 @@ def delete_note(i):
     if 0 <= i < len(notes):
         notes.pop(i)
     return redirect(url_for('noteTake'))
-   
+
+@app.route('/edit/<int:i>', methods=['GET', 'POST'], endpoint="edit_note")
+def edit_note(i):
+    if request.method == 'POST':
+        edited_note = request.form["text"]
+        notes[i] = edited_note
+        return redirect(url_for('noteTake'))
+    return render_template('form.html', notes=notes, editing_i=i, editing_text=notes[i])
+
 print(app.url_map)
 
 if __name__ == "__main__":
