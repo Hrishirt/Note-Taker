@@ -44,6 +44,12 @@ def edit_note(i):
         return redirect(url_for('noteTake'))
     return render_template('form.html', notes=notes, editing_i=i, editing_text=notes[i])
 
+@app.route('/clear_notes', methods=['POST'], endpoint='clear_notes')
+def clear_note():
+    notes.clear()
+    return render_template('form.html', notes=notes)
+
+
 print(app.url_map)
 
 if __name__ == "__main__":
