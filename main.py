@@ -38,7 +38,7 @@ def noteform():
     return render_template('form.html')
 '''
 
-notes = [] 
+notes1 = [] 
 
 
 @app.route('/', methods =['POST', 'GET'])
@@ -46,12 +46,12 @@ def noteTake():
     if request.method == 'POST':
         note = request.form['text']
         if note:
-            notes.append(note)
+            notes1.append(note)
             db.session.add(Note(content=note))
             db.session.commit()
         return redirect(url_for('noteTake'))
     allNotes = Note.query.all()
-    print(allNotes)
+    # print(allNotes)
     return render_template('form.html', notes=allNotes)
 
 @app.route('/delete/<int:i>', methods=['POST'], endpoint="delete_note")
@@ -64,14 +64,20 @@ def delete_note(i):
 def edit_note(i):
     if request.method == 'POST':
         edited_note = request.form["text"]
-        notes[i] = edited_note
+        print("Request form worked")
+        dbNote = Note.query.get(i)
+        dbNote.content = edited_note
+        db.session.commit()
         return redirect(url_for('noteTake'))
-    return render_template('form.html', notes=notes, editing_i=i, editing_text=notes[i])
+    allNotes = Note.query.all()
+    return render_template('form.html',notes=allNotes, editing_i=i)
 
 @app.route('/clear_notes', methods=['POST'], endpoint='clear_notes')
 def clear_note():
-    notes.clear()
-    return render_template('form.html', notes=notes)
+    db.session.query(Note).delete()
+    db.session.commit()
+    allNotes = Note.query.all()
+    return render_template('form.html', notes=allNotes)
 
 
 print(app.url_map)
