@@ -100,10 +100,28 @@ def hello():
 def noteform():
     return render_template('form.html')
 '''
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been logged out")
+    return redirect(url_for('signin'))
 
+def loginCheck():
+    if 'user_id' not in session:
+        flash("Please login to view this page")
+        return redirect(url_for('signin'))
+    return None
+
+@app.route('/transfer')
+def transfer():
+    return redirect(url_for('signup'))
 
 @app.route('/', methods =['POST', 'GET'])
 def noteTake():
+    authCheck = loginCheck()
+    if authCheck:
+        return authCheck
+    
     if request.method == 'POST':
         note = request.form['text']
         if note:
