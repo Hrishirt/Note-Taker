@@ -54,7 +54,7 @@ def signup():
             emailCheck = User.query.filter_by(email=email).first()
             print(emailCheck)
             if emailCheck:
-                flash("User already exists")
+                flash("User already exists", "error")
             else:
                 new_user = User(email=email, password=hashed_password)
                 print(f"User created: {new_user}")
@@ -62,7 +62,7 @@ def signup():
                 db.session.commit()
                 session['user_id'] = new_user.id
                 print("User committed to database")
-                flash("Account successfully created")
+                flash("Account successfully created", "success")
                 return redirect(url_for('noteTake'))
     return render_template('signup.html')
 
@@ -78,15 +78,15 @@ def signin():
             passwordcheck = bcrypt.check_password_hash(emailCheck.password, password)
             print(f"Password check: {passwordcheck}")
             if passwordcheck:
-                flash("Sign in Successful")
+                flash("Sign in Successful", "success")
                 time.sleep(2)
                 session['user_id'] = emailCheck.id
                 return redirect(url_for('noteTake'))
 
             else:
-                flash("Incorrect password")
+                flash("Incorrect password", "error")
         else:
-            flash("Incorrect Email or password")
+            flash("Incorrect Email or password", "error")
 
     return render_template('signin.html')
 
@@ -103,12 +103,12 @@ def noteform():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash("You have been logged out")
+    flash("You have been logged out", "success")
     return redirect(url_for('signin'))
 
 def loginCheck():
     if 'user_id' not in session:
-        flash("Please login to view this page")
+        flash("Please login to view this page", "error")
         return redirect(url_for('signin'))
     return None
 
@@ -164,5 +164,5 @@ def clear_note():
 
 print(app.url_map)
 
-if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False, host="127.0.0.1", port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=False)

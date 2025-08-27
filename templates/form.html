@@ -4,41 +4,101 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note App</title>
+    <title>Note App - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </head>
 <body>
-    <ul>
-        {% for note in notes %}
-        <li>
-            {{ note.content }}
-            <form action="{{ url_for('delete_note', i=note.id) }}" method="POST" style="display: inline;">
-                <button type="submit">Delete</button>
-            </form>
-             <form action="{{ url_for('edit_note', i=note.id) }}" method="GET" style="display: inline;">
-                <button type="Submit">Edit</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
-    {% if editing_i is defined %}
-        <!-- Edit form -->
-        <h3>Edit Note:</h3>
-        <form action="{{ url_for('edit_note', i=editing_i) }}" method="POST">
-            <input name="text" value="{{ editing_text }}" required>
-            <input type="submit" value="Update">
-        </form>
-        <a href="{{ url_for('noteTake') }}">Cancel</a>
-    {% else %}
-        <!-- Add new note form -->
-        <h3>Add New Note:</h3>
-        <form action="/" method="POST">
-            <input name="text" placeholder="Enter your note..." required>
-            <input type="submit" value="Add Note">
-        </form>
-    {% endif %}
-        <form action="/clear_notes" method="POST">
-            <input type="submit" value="Clear Notes">
-        </form>
-        <a href="{{ url_for('logout') }}">Logout</a>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📝 My Notes</h1>
+            <p>Organize your thoughts, one note at a time</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Main Card -->
+        <div class="card">
+            {% if editing_i is defined %}
+                <!-- Edit Form -->
+                <div class="edit-form">
+                    <h3>✏️ Edit Note</h3>
+                    <form action="{{ url_for('edit_note', i=editing_i) }}" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="text" value="{{ editing_text }}" class="form-control" required>
+                        </div>
+                        <div class="note-actions">
+                            <button type="submit" class="btn btn-success">Update Note</button>
+                            <a href="{{ url_for('noteTake') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <!-- Add New Note Form -->
+                <h3 style="margin-bottom: 20px; color: #495057;">✨ Add New Note</h3>
+                <form action="/" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="text" placeholder="What's on your mind?" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Note</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <!-- Notes Container -->
+        {% if notes %}
+            <div class="card">
+                <h3 style="margin-bottom: 20px; color: #495057;">📋 Your Notes ({{ notes|length }})</h3>
+                <div class="notes-container">
+                    {% for note in notes %}
+                        <div class="note-item">
+                            <div class="note-content">
+                                {{ note.content }}
+                            </div>
+                            <div class="note-actions">
+                                <form action="{{ url_for('edit_note', i=note.id) }}" method="GET">
+                                    <button type="submit" class="btn btn-secondary">Edit</button>
+                                </form>
+                                <form action="{{ url_for('delete_note', i=note.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Clear All Notes -->
+                <div style="margin-top: 30px; text-align: center;">
+                    <form action="/clear_notes" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete ALL notes? This action cannot be undone.')">
+                            🗑️ Clear All Notes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <div style="text-align: center; padding: 40px 20px;">
+                    <h3 style="color: #6c757d; margin-bottom: 15px;">📝 No Notes Yet</h3>
+                    <p style="color: #6c757d;">Start by adding your first note above!</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a href="{{ url_for('logout') }}">🚪 Logout</a>
+        </div>
+    </div>
 </body>
 </html>

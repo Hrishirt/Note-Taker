@@ -4,23 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note App</title>
+    <title>Note App - Sign In</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </head>
 <body>
-    <form action="/signin" method="POST">
-        <input name="email" placeholder="Enter your email" required>
-        <input name="password" placeholder="Enter your password" required>
-        <input type="submit" value="sign in">
-    </form>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="flash-message {{ category }}">
-                    {{ message }}
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔐 Welcome Back</h1>
+            <p>Sign in to access your notes</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Sign In Form -->
+        <div class="card">
+            <h3 style="margin-bottom: 30px; color: #495057; text-align: center;">Sign In</h3>
+            <form action="/signin" method="POST">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required>
                 </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <a href="{{ url_for('transfer') }}">Click here to sign up</a>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" class="form-control" required>
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <p>Don't have an account? <a href="{{ url_for('transfer') }}">Sign up here</a></p>
+        </div>
+    </div>
 </body>
 </html>
