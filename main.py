@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from markupsafe import escape
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
@@ -56,10 +56,11 @@ def signup():
             if emailCheck:
                 flash("User already exists")
             else:
-                new_user = User(email=email)
+                new_user = User(email=email, password=hashed_password)
                 print(f"User created: {new_user}")
-                db.session.add(User(email=email, password=hashed_password))
+                db.session.add(new_user)
                 db.session.commit()
+                session['user_id'] = new_user.id
                 print("User committed to database")
                 flash("Account successfully created")
                 return redirect(url_for('noteTake'))
@@ -79,13 +80,14 @@ def signin():
             if passwordcheck:
                 flash("Sign in Successful")
                 time.sleep(2)
+                session['user_id'] = emailCheck.id
                 return redirect(url_for('noteTake'))
 
             else:
                 flash("Incorrect password")
         else:
             flash("Incorrect Email or password")
-    \
+
     return render_template('signin.html')
 
 @app.route("/hello")
@@ -105,10 +107,13 @@ def noteTake():
     if request.method == 'POST':
         note = request.form['text']
         if note:
-            db.session.add(Note(content=note))
+            user_id = session['user_id']
+            db.session.add(Note(content=note, user_id=user_id))
             db.session.commit()
         return redirect(url_for('noteTake'))
-    allNotes = Note.query.all()
+    user_id = session['user_id']
+    allNotes = Note.query.filter_by(user_id=user_id).all()
+
     # print(allNotes)
     return render_template('form.html', notes=allNotes)
 
