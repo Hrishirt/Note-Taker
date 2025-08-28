@@ -166,5 +166,5 @@ def clear_note():
 print(app.url_map)
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=5000, debug=False)
-    app.run(debug=True, use_reloader=False, host="127.0.0.1", port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=False)
+    #app.run(debug=True, use_reloader=False, host="127.0.0.1", port=5000)
