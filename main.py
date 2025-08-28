@@ -150,7 +150,8 @@ def edit_note(i):
         dbNote.content = edited_note
         db.session.commit()
         return redirect(url_for('noteTake'))
-    allNotes = Note.query.all()
+    user_id = session['user_id']
+    allNotes = Note.query.filter_by(user_id=user_id).all()
     noteContent = Note.query.get(i)
     return render_template('form.html',notes=allNotes, editing_i=i, editing_text= noteContent.content)
 
@@ -165,4 +166,5 @@ def clear_note():
 print(app.url_map)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    # app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(debug=True, use_reloader=False, host="127.0.0.1", port=5000)
