@@ -37,6 +37,19 @@ body {
     color: #9ca3af;
 }
 
+.search-container {
+    justify-content: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.search-bar {
+    background-color: #161a22;
+    border-radius: 14px;
+    padding: 10px 18px;
+}
+
 /* Card Container */
 .card {
     background: #161a22;
@@ -69,7 +82,20 @@ body {
     background: #0f131a;
     color: #e5e7eb;
 }
-
+.search-input {
+    background-color: #0f131a;
+    border-radius: 10px;
+    border: 1px solid #2a3040;
+    padding: 10px 18px;
+    color: #e5e7eb;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.35);
+}
+.search-input:focus {
+    outline: none;
+    border-color: #374151;
+    box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.35);
+}
 .form-control:focus {
     outline: none;
     border-color: #374151;
