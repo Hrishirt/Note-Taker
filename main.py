@@ -67,6 +67,18 @@ def signup():
     return render_template('signup.html')
 
 
+@app.route('/search', methods= ['POST'])
+def search():
+    search = request.form['search-query']
+    user_id = session['user_id']
+    notes = Note.query.filter(Note.user_id==user_id, Note.content.ilike(f'%{search}%')).all()
+        # Debug prints
+    '''print(f"Search term: '{search}'")
+    print(f"Found {len(notes)} notes")
+    for note in notes:
+        print(f"Note: '{note.content}'")'''
+    return render_template('form.html', notes=notes, search_query=search)
+
 @app.route("/signin", methods = ['POST', "GET"])
 def signin(): 
     if request.method == 'POST': 
@@ -172,5 +184,5 @@ def clear_note():
 print(app.url_map)
 
 if __name__ == '__main__':
-    #app.run(host='0.0.0.0', port=5000, debug=False)
-    app.run(debug=True, use_reloader=False, host="127.0.0.1", port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=False)
+    #app.run(debug=True, use_reloader=False, host="127.0.0.1", port=5000)

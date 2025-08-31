@@ -37,6 +37,11 @@ body {
     color: #9ca3af;
 }
 
+.home-link a{
+    text-decoration: none;
+    color: white;
+}
+
 .search-container {
     justify-content: center;
     display: flex;
