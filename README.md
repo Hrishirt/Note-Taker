@@ -32,10 +32,6 @@ A fully functional note-taking application featuring:
 
         Deployed on Render with proper environment configuration
 
-        Production-ready with secure secret key management
-
-        Real URL that anyone can access
-
 🛠️ Tech Stack
 
 Backend:
@@ -54,24 +50,19 @@ Frontend:
 
     JavaScript for interactive functionality
 
-    Responsive design with mobile optimization
 
 Database:
 
     SQLite (development)
 
-    Ready for PostgreSQL (production scaling)
+    PostgreSQL (production scaling)
 
 Deployment:
 
-    Render (cloud platform)
+    Render 
+ 
 
-    Git-based deployment workflow
-
-🧠 What I Learned
-
-This project was my introduction to real full-stack development. Through building it, I gained hands-on experience with:
-Backend Development
+This project was my first end to end app. From a Figma mockup all the way to deployment.
 
     Web frameworks - Understanding Flask routing, request handling, and templating
 
@@ -89,21 +80,7 @@ Frontend Development
 
     Modern CSS - Gradient backgrounds, animations, and professional styling
 
-DevOps & Deployment
 
-    Environment management - Using .env files and production configurations
-
-    Git workflow - Version control and collaborative development practices
-
-    Cloud deployment - Understanding production vs development environments
-
-Problem-Solving & Debugging
-
-    Reading error messages - Learning to interpret Flask/Python errors
-
-    Systematic debugging - Using print statements and logical thinking
-
-    Research skills - Finding solutions and understanding documentation
 
 🌟 Overcoming Imposter Syndrome
 
